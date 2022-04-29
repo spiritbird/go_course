@@ -1,0 +1,53 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+          <meta charset="UTF-8" />
+          <title>index</title>
+        </head>
+    <body>
+      <h1>test websocket</h1>
+      <p id="message-json"></p>
+      <p id="message-text"></p>
+      <script>
+            function jsonWS() {
+                  var ws = new WebSocket("ws://localhost:8000/json");
+                  //连接打开时触发
+                  ws.onopen = function (evt) {
+                        console.log("Connection open ...");
+                        var obj = { a: "你是机器人吗", b: 9 };
+                        ws.send(JSON.stringify(obj));
+                      };
+                  //接收到消息时触发
+                  ws.onmessage = function (evt) {
+                        console.log("Received Message: " + evt.data);
+                        document.getElementById("message-json").innerText += evt.data;
+                      };
+                  //连接关闭时触发
+                  ws.onclose = function (evt) {
+                        console.log("Connection closed.");
+                      };
+                }
+    
+            function textWS() {
+                  var ws = new WebSocket("ws://localhost:8000/text");
+                  //连接打开时触发
+                  ws.onopen = function (evt) {
+                        console.log("Connection open ...");
+                        ws.send("text message");
+                      };
+                  //接收到消息时触发
+                  ws.onmessage = function (evt) {
+                        console.log("Received Message: " + evt.data);
+                        document.getElementById("message-text").innerText = evt.data;
+                      };
+                  //连接关闭时触发
+                  ws.onclose = function (evt) {
+                        console.log("Connection closed.");
+                      };
+                }
+            // 启动 websocket
+            jsonWS();
+            textWS();
+          </script>
+    </body>
+  </html>
